@@ -82,7 +82,7 @@ class MainMenuScreen implements Screen {
 	}
 }
 
-public class TheGame extends Game { // ini Game class tak ubah jadi TheGame karena nabrak sama import Game
+public class TheGame extends Game {
 	SpriteBatch batch;
 	public BitmapFont font;
 	public BitmapFont winFont;
