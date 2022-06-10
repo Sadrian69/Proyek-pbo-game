@@ -9,12 +9,12 @@ import com.badlogic.gdx.math.Rectangle;
 import static com.badlogic.gdx.math.MathUtils.lerp;
 
 public abstract class Enemy extends Rectangle implements EnemyAble{
-   static float[] pos = {100,200,300,400,500,600,700,800};
+   float pos = 45;
    public int chargeLimit;
    public int curCharge;
    public int curPos;
    private final float moveTime = 0.5f;
-   public GameScreen gameScreen;
+   public Demo demo;
    public TextureAtlas idling;
    public static final float FRAME_DURATION = .05f;
    public Animation animation;
@@ -22,14 +22,16 @@ public abstract class Enemy extends Rectangle implements EnemyAble{
    public float originX, originY;
 
    public void move(){
-      curPos -= 1;
-      float tempx = this.x;
-      float alpha = 0;
-      float currentTime = 0;
-      while(alpha < 1){
-         currentTime += Gdx.graphics.getDeltaTime();
-         alpha = moveTime/currentTime;
-         this.x = lerp(tempx,pos[curPos],alpha);
+      if(curPos > 1) {
+         curPos -= 1;
+         float tempx = this.x;
+         float alpha = 0;
+         float currentTime = 0;
+         while (alpha < 1) {
+            currentTime += Gdx.graphics.getDeltaTime();
+            alpha = moveTime / currentTime;
+            this.x = lerp(tempx, pos * curPos, alpha);
+         }
       }
    }
 
