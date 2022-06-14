@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 public class EnemyMelee extends Enemy{
    // hanya menyerang 1 kotak di depan
    // menyerang setiap 2 giliran
-   private int distanceOffset = 100;
+   private int distanceOffset = 300;
 
    public EnemyMelee(int startpos) {
       this.width = 300;
