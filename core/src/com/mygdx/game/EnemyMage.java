@@ -7,6 +7,11 @@ public class EnemyMage extends Enemy{
 
 
    @Override
+   public void move() {
+
+   }
+
+   @Override
    public void attack() {
 
    }

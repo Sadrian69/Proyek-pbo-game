@@ -5,6 +5,11 @@ public class EnemyRanged extends Enemy{
    // menyerang setiap 3 giliran
 
    @Override
+   public void move() {
+
+   }
+
+   @Override
    public void attack() {
 
    }
