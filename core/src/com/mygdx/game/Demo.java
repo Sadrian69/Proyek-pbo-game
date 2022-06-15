@@ -3,21 +3,22 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Demo implements Screen {
    final TheGame game;
    private SpriteBatch batch;
    OrthographicCamera camera;
    private float elapsedTime = 0f;
-   private Enemy enemy1, enemy0;
+   private Hero hero;
+   private ArrayList<Enemy> enemies;
    BitmapFont font = new BitmapFont();
 
    public Demo(final TheGame game) {
@@ -28,39 +29,75 @@ public class Demo implements Screen {
       camera.setToOrtho(false, 1080, 720);
       font.getData().setScale(2.5f);
 
-      enemy1 = new EnemyMelee(7);
-      enemy0 = new EnemyMelee(0);
-      enemy0.x = 20;
-
+      enemies = new ArrayList<>();
+      enemies.add(new EnemyMelee(hero));
 
    }
 
    @Override
    public void render(float delta) {
-      ScreenUtils.clear(0, 0, 0.9f, 1);
+      ScreenUtils.clear(0, 0.05f, 0.44f, 1);
       batch.setProjectionMatrix(camera.combined);
-      //camera.update();
+      camera.update();
       elapsedTime += Gdx.graphics.getDeltaTime();
 
       batch.begin();
 
-      batch.draw(enemy1.currentFrame(elapsedTime), enemy1.x, enemy1.y, 0, 0, enemy1.width, enemy1.height,-1,1,0);
-      font.draw(batch, Integer.toString(enemy1.chargeLimit-enemy1.curCharge),enemy1.x - 160,enemy1.y + 250);
-      batch.draw(enemy0.currentFrame(elapsedTime), enemy0.x, enemy0.y, 0, 0, enemy0.width, enemy0.height,1,1,0);
+      for(Enemy enemy:enemies) {
+         batch.draw(enemy.currentFrame(elapsedTime), enemy.x, enemy.y, 0, 0, enemy.width, enemy.height,-1,1,0);
+         if(enemy.chargeLimit-enemy.curCharge == 1){
+            font.setColor(Color.RED);
+            font.draw(batch, "!",enemy.x - 160,enemy.y + 250);
+         }
+         else {
+            font.setColor(Color.WHITE);
+            font.draw(batch, Integer.toString(enemy.chargeLimit - enemy.curCharge), enemy.x - 160, enemy.y + 250);
+         }
+      }
 
       batch.end();
 
       if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-         enemy1.move();
-         enemy1.act();
+         // hero lompat kecil atau gausah gapapa
+         if(enemies.get(0).curPos == 1){
+            // sfx tetot
+         }
+         else{
+            for (Enemy enemy : enemies) {
+               enemy.move(elapsedTime);
+            }
+            if (enemies.size() < 3) { // spawner
+               Random random = new Random();
+               int newEnemy = random.nextInt() % 100;
+               // 0-24 = melee; 25-49 = ranged; 50-74 = mage; 75-99 = no spawn
+               if (newEnemy < 25) {
+                  Enemy enemy = new EnemyMelee(hero);
+                  enemies.add(enemy);
+               } else if (newEnemy < 50) {
+                  // Enemy enemy = new EnemyRanged();
+                  // enemies.add(enemy);
+               } else if (newEnemy < 75) {
+                  // Enemy enemy = new EnemyMage();
+                  // enemies.add(enemy);
+               }
+            }
+         }
       }
-      else if(Gdx.input.isButtonJustPressed(Input.Keys.DOWN)){
+      if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
+         for (Enemy enemy : enemies) {
+            enemy.act(elapsedTime);
+         }
          // hero attack
-         enemy1.act();
+         if(enemies.get(0).curPos == 1){ // meninggal
+            enemies.get(0).die();
+            enemies.remove(0);
+         }
       }
-      else if(Gdx.input.isButtonJustPressed(Input.Keys.LEFT)){
-         // hero block
-         enemy1.act();
+      if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
+         // hero blocking = true
+         for (Enemy enemy : enemies) {
+            enemy.act(elapsedTime);
+         }
       }
    }
 
@@ -88,5 +125,7 @@ public class Demo implements Screen {
 
    @Override
    public void dispose() {
+      batch.dispose();
+      font.dispose();
    }
 }
