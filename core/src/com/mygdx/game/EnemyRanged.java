@@ -2,10 +2,15 @@ package com.mygdx.game;
 
 public class EnemyRanged extends Enemy{
    // menyerang hero dari mana saja
-   // menyerang setiap 3 giliran
+   // menyerang setiap 5 giliran
 
    @Override
-   public void attack() {
+   public void move(float time) {
+
+   }
+
+   @Override
+   public void attack(float time) {
 
    }
 }

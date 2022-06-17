@@ -1,81 +1,46 @@
-Idle.png
+Attack.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-idling
+attacking
   rotate: false
   xy: 0, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 0
-idling
+attacking
   rotate: false
   xy: 140, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 1
-idling
+attacking
   rotate: false
   xy: 280, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 2
-idling
+attacking
   rotate: false
   xy: 420, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 3
-idling
+attacking
   rotate: false
   xy: 560, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 4
-idling
+attacking
   rotate: false
   xy: 700, 0
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: 5
-idling
-  rotate: false
-  xy: 840, 0
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 6
-idling
-  rotate: false
-  xy: 980, 0
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 7
-idling
-  rotate: false
-  xy: 1120, 0
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 8
-idling
-  rotate: false
-  xy: 1260, 0
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 9
-idling
-  rotate: false
-  xy: 1400, 0
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 10

@@ -3,58 +3,102 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Demo implements Screen {
    final TheGame game;
    private SpriteBatch batch;
    OrthographicCamera camera;
    private float elapsedTime = 0f;
+   private Hero hero;
+   private ArrayList<Enemy> enemies;
+   BitmapFont font = new BitmapFont();
+
    public Demo(final TheGame game) {
       this.game = game;
       batch = new SpriteBatch();
       camera = new OrthographicCamera();
       Gdx.graphics.setWindowedMode(1080,720);
       camera.setToOrtho(false, 1080, 720);
+      font.getData().setScale(2.5f);
 
+      enemies = new ArrayList<>();
+      enemies.add(new EnemyMelee(hero));
 
    }
 
    @Override
    public void render(float delta) {
-      ScreenUtils.clear(0, 0, 0.2f, 1);
+      ScreenUtils.clear(0, 0.05f, 0.44f, 1);
       batch.setProjectionMatrix(camera.combined);
-      //camera.update();
+      camera.update();
       elapsedTime += Gdx.graphics.getDeltaTime();
 
       batch.begin();
 
-      Enemy enemy1 = new EnemyMelee(this,7);
-      batch.draw(enemy1.currentFrame(elapsedTime), enemy1.x, enemy1.y, enemy1.x, enemy1.y, enemy1.width, enemy1.height,-1,1,0);
-      Enemy enemy2 = new EnemyMelee(this,6);
-      batch.draw(enemy2.currentFrame(elapsedTime), enemy2.x, enemy2.y, enemy2.x, enemy2.y, enemy2.width, enemy2.height,-1,1,0);
-      Enemy enemy3 = new EnemyMelee(this,5);
-      batch.draw(enemy3.currentFrame(elapsedTime), enemy3.x, enemy3.y, enemy3.x, enemy3.y, enemy3.width, enemy3.height,-1,1,0);
-      Enemy enemy4 = new EnemyMelee(this,4);
-      batch.draw(enemy4.currentFrame(elapsedTime), enemy4.x, enemy4.y, enemy4.x, enemy4.y, enemy4.width, enemy4.height,-1,1,0);
-      Enemy enemy5 = new EnemyMelee(this,3);
-      batch.draw(enemy5.currentFrame(elapsedTime), enemy5.x, enemy5.y, enemy5.x, enemy5.y, enemy5.width, enemy5.height,-1,1,0);
-      Enemy enemy6 = new EnemyMelee(this,2);
-      batch.draw(enemy6.currentFrame(elapsedTime), enemy6.x, enemy6.y, enemy6.x, enemy6.y, enemy6.width, enemy6.height,-1,1,0);
-      Enemy enemy7 = new EnemyMelee(this,1);
-      enemy7.x = -20;
-      batch.draw(enemy7.currentFrame(elapsedTime), enemy7.x, enemy7.y, enemy7.x, enemy7.y, enemy7.width, enemy7.height,1,1,0);
+      for(Enemy enemy:enemies) {
+         batch.draw(enemy.currentFrame(elapsedTime), enemy.x, enemy.y, 0, 0, enemy.width, enemy.height,-1,1,0);
+         if(enemy.chargeLimit-enemy.curCharge == 1){
+            font.setColor(Color.RED);
+            font.draw(batch, "!",enemy.x - 160,enemy.y + 250);
+         }
+         else {
+            font.setColor(Color.WHITE);
+            font.draw(batch, Integer.toString(enemy.chargeLimit - enemy.curCharge), enemy.x - 160, enemy.y + 250);
+         }
+      }
 
       batch.end();
 
-      if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) enemy1.move();
-
+      if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+         // hero lompat kecil atau gausah gapapa
+         if(enemies.get(0).curPos == 1){
+            // sfx tetot
+         }
+         else{
+            for (Enemy enemy : enemies) {
+               enemy.move(elapsedTime);
+            }
+            if (enemies.size() < 3) { // spawner
+               Random random = new Random();
+               int newEnemy = random.nextInt() % 100;
+               // 0-24 = melee; 25-49 = ranged; 50-74 = mage; 75-99 = no spawn
+               if (newEnemy < 25) {
+                  Enemy enemy = new EnemyMelee(hero);
+                  enemies.add(enemy);
+               } else if (newEnemy < 50) {
+                  // Enemy enemy = new EnemyRanged();
+                  // enemies.add(enemy);
+               } else if (newEnemy < 75) {
+                  // Enemy enemy = new EnemyMage();
+                  // enemies.add(enemy);
+               }
+            }
+         }
+      }
+      if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
+         for (Enemy enemy : enemies) {
+            enemy.act(elapsedTime);
+         }
+         // hero attack
+         if(enemies.get(0).curPos == 1){ // meninggal
+            enemies.get(0).die();
+            enemies.remove(0);
+         }
+      }
+      if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
+         // hero blocking = true
+         for (Enemy enemy : enemies) {
+            enemy.act(elapsedTime);
+         }
+      }
    }
 
    @Override
@@ -81,5 +125,7 @@ public class Demo implements Screen {
 
    @Override
    public void dispose() {
+      batch.dispose();
+      font.dispose();
    }
 }
