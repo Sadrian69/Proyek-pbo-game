@@ -30,8 +30,8 @@ public class Demo implements Screen {
       font.getData().setScale(2.5f);
 
       enemies = new ArrayList<>();
-      enemies.add(new EnemyMelee(hero));
       hero = new Hero(enemies);
+      enemies.add(new EnemyMelee(hero));
    }
 
    @Override
@@ -63,6 +63,8 @@ public class Demo implements Screen {
 
       if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
          // hero lompat kecil atau gausah gapapa
+         hero.Unblock();
+
          if(enemies.get(0).curPos == 1){
             // sfx tetot
          }
@@ -88,14 +90,13 @@ public class Demo implements Screen {
          }
       }
       if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
+         hero.Unblock();
          for (Enemy enemy : enemies) {
             enemy.act(elapsedTime);
          }
-         //hero attack
          hero.Attack(elapsedTime);
       }
       if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
-         // hero blocking = true
          hero.Block();
          for (Enemy enemy : enemies) {
             enemy.act(elapsedTime);

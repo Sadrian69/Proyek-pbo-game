@@ -59,6 +59,9 @@ public class Hero extends Rectangle {
     public void Block(){
         blocking = true;
     }
+    public void Unblock(){
+        blocking = false;
+    }
 
     public void Hurt(){
         health = health - 1;
