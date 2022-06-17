@@ -25,7 +25,7 @@ public class TheGame extends Game { // ini tak ganti TheGame classnya karena kar
 		loseFont = new BitmapFont();
 		loseFont.setColor(Color.RED);
 		loseFont.getData().setScale(2);
-		mainTheme = Gdx.audio.newMusic(Gdx.files.internal("mainTheme.wav"));
+		mainTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/mainTheme.wav"));
 		this.setScreen(new Demo(this));
 	}
 

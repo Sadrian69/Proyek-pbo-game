@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,6 +20,8 @@ public class Hero extends Rectangle {
     public Animation idleAnimation;
     public Animation attackAnimation;
     public TextureRegion firstTexture;
+    Sound takeDamageSound;
+    Sound deathSound;
     public float lastAttack;
     ArrayList<Enemy> enemies;
 
@@ -31,6 +34,9 @@ public class Hero extends Rectangle {
         this.width = 300;
         this.height = 300;
         this.enemies = enemies;
+
+        takeDamageSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/takeDamage.wav"));
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Death.wav"));
 
         idling = new TextureAtlas(Gdx.files.internal("Sprites/Hero/idle.atlas"));
         Array<TextureAtlas.AtlasRegion> idlingFrames = idling.findRegions("idling");
@@ -65,6 +71,15 @@ public class Hero extends Rectangle {
 
     public void Hurt(){
         health = health - 1;
+        if(health == 0){
+            die();
+        }
+        else takeDamageSound.play();
+    }
+
+    public void die(){
+        //ganti screen??
+        deathSound.play();
     }
 
     public boolean isBlocking() {

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,6 +19,7 @@ public abstract class Enemy extends Rectangle implements EnemyAble{
    public Animation idleAnimation;
    public Animation attackAnimation;
    public TextureRegion firstTexture;
+   public Sound deathSound;
    public Hero hero;
 
    public TextureRegion currentFrame(float time){
@@ -36,6 +38,6 @@ public abstract class Enemy extends Rectangle implements EnemyAble{
 
    @Override
    public void die() {
-
+      deathSound.play();
    }
 }

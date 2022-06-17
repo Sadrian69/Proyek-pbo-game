@@ -21,6 +21,8 @@ public class EnemyMelee extends Enemy{
       this.y = 300;
       this.hero = hero;
 
+      deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/monsterDeath.wav"));
+
       idling = new TextureAtlas(Gdx.files.internal("Sprites/Melee/Idle.atlas"));
       Array<TextureAtlas.AtlasRegion> idlingFrames = idling.findRegions("idling");
       idleAnimation = new Animation(FRAME_DURATION, idlingFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP);
