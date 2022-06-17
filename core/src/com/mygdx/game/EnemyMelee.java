@@ -41,7 +41,7 @@ public class EnemyMelee extends Enemy{
 
    @Override
    public void attack(float time) {
-      //if(curPos == 1 && !hero.isBlocking()) hero.Hurt();
+      if(curPos == 1 && !hero.isBlocking()) hero.Hurt();
       lastAttack = time;
    }
 

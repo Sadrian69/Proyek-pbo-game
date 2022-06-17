@@ -31,7 +31,7 @@ public class Demo implements Screen {
 
       enemies = new ArrayList<>();
       enemies.add(new EnemyMelee(hero));
-
+      hero = new Hero(enemies);
    }
 
    @Override
@@ -42,6 +42,10 @@ public class Demo implements Screen {
       elapsedTime += Gdx.graphics.getDeltaTime();
 
       batch.begin();
+
+      batch.draw(hero.currentFrame(elapsedTime), hero.x, hero.y, hero.width, hero.height);
+      font.setColor(Color.WHITE);
+      font.draw(batch, Integer.toString(hero.health), hero.x + 150, hero.y + 260);
 
       for(Enemy enemy:enemies) {
          batch.draw(enemy.currentFrame(elapsedTime), enemy.x, enemy.y, 0, 0, enemy.width, enemy.height,-1,1,0);
@@ -87,14 +91,12 @@ public class Demo implements Screen {
          for (Enemy enemy : enemies) {
             enemy.act(elapsedTime);
          }
-         // hero attack
-         if(enemies.get(0).curPos == 1){ // meninggal
-            enemies.get(0).die();
-            enemies.remove(0);
-         }
+         //hero attack
+         hero.Attack(elapsedTime);
       }
       if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
          // hero blocking = true
+         hero.Block();
          for (Enemy enemy : enemies) {
             enemy.act(elapsedTime);
          }
