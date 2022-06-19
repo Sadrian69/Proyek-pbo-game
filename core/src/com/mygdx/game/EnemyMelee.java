@@ -7,13 +7,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class EnemyMelee extends Enemy{
    // hanya menyerang 1 kotak di depan
-   // menyerang setiap 2 giliran
+   // menyerang setiap 3 giliran
    private int distanceOffset = 300;
 
    public EnemyMelee(Hero hero) {
       this.width = 300;
       this.height = 300;
-      chargeLimit = 2;
+      chargeLimit = 3;
       curCharge = 0;
       curPos = 7;
       lastAttack = -100f;

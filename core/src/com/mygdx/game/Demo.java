@@ -31,6 +31,7 @@ public class Demo implements Screen {
 
       enemies = new ArrayList<>();
       hero = new Hero(enemies);
+
       enemies.add(new EnemyMelee(hero));
    }
 
@@ -45,17 +46,25 @@ public class Demo implements Screen {
 
       batch.draw(hero.currentFrame(elapsedTime), hero.x, hero.y, hero.width, hero.height);
       font.setColor(Color.WHITE);
-      font.draw(batch, Integer.toString(hero.health), hero.x + 150, hero.y + 260);
+      font.draw(batch, Integer.toString(hero.health), hero.x + 140, 550);
 
       for(Enemy enemy:enemies) {
          batch.draw(enemy.currentFrame(elapsedTime), enemy.x, enemy.y, 0, 0, enemy.width, enemy.height,-1,1,0);
+         float fontx = enemy.x - 160;
+         float fonty = 550;
+         if(enemy instanceof EnemyRanged){
+            fontx = enemy.x - 130;
+         }
+         else if(enemy instanceof EnemyMage){
+            fontx = enemy.x - 220;
+         }
          if(enemy.chargeLimit-enemy.curCharge == 1){
             font.setColor(Color.RED);
-            font.draw(batch, "!",enemy.x - 160,enemy.y + 250);
+            font.draw(batch, "!",fontx,fonty);
          }
          else {
             font.setColor(Color.WHITE);
-            font.draw(batch, Integer.toString(enemy.chargeLimit - enemy.curCharge), enemy.x - 160, enemy.y + 250);
+            font.draw(batch, Integer.toString(enemy.chargeLimit - enemy.curCharge), fontx, fonty);
          }
       }
 
@@ -65,7 +74,7 @@ public class Demo implements Screen {
          // hero lompat kecil atau gausah gapapa
          hero.Unblock();
 
-         if(enemies.get(0).curPos == 1){
+         if(!enemies.isEmpty() && enemies.get(0).curPos == 1){
             // sfx tetot
          }
          else{
@@ -73,18 +82,19 @@ public class Demo implements Screen {
                enemy.move(elapsedTime);
             }
             if (enemies.size() < 3) { // spawner
-               Random random = new Random();
-               int newEnemy = random.nextInt() % 100;
-               // 0-24 = melee; 25-49 = ranged; 50-74 = mage; 75-99 = no spawn
-               if (newEnemy < 25) {
+               Random random = new Random(System.nanoTime());
+               int newEnemy = random.nextInt(999);
+               int x = 3-enemies.size();
+
+               if (newEnemy < 111*x) {
                   Enemy enemy = new EnemyMelee(hero);
                   enemies.add(enemy);
-               } else if (newEnemy < 50) {
-                  // Enemy enemy = new EnemyRanged();
-                  // enemies.add(enemy);
-               } else if (newEnemy < 75) {
-                  // Enemy enemy = new EnemyMage();
-                  // enemies.add(enemy);
+               } else if (newEnemy < 222*x) {
+                  Enemy enemy = new EnemyRanged(hero);
+                  enemies.add(enemy);
+               } else if (newEnemy < 333*x) {
+                  Enemy enemy = new EnemyMage(hero);
+                  enemies.add(enemy);
                }
             }
          }

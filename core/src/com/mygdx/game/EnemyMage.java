@@ -1,20 +1,25 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
+
 public class EnemyMage extends Enemy{
    // menyerang hero dari mana saja
    // menyerang setiap 16 giliran, udah worst case
    // serangan tidak bisa diblok
-   private int distanceOffset = 300;
+   private int distanceOffset = 340;
    
    public EnemyMage(Hero hero){
-      this.width = 300;
-      this.height = 300;
+      this.width = 400;
+      this.height = 400;
       chargeLimit = 16;
       curCharge = 0;
       curPos = 7;
       lastAttack = -100f;
       this.x = distanceOffset + pos * curPos;
-      this.y = 300;
+      this.y = 290;
       this.hero = hero;
       
       deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/monsterDeath.wav"));
@@ -42,6 +47,7 @@ public class EnemyMage extends Enemy{
 
    @Override
    public void attack(float time) {
+      hero.Hurt();
       lastAttack = time;
 
    }
