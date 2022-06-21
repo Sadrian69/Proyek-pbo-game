@@ -60,6 +60,7 @@ public class Hero extends Rectangle {
         if(enemies.get(0).curPos == 1){ // meninggal
             enemies.get(0).die();
             enemies.remove(0);
+            Demo.win++;
         }
     }
     public void Block(){

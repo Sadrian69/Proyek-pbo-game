@@ -9,15 +9,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TheGame extends Game { // ini tak ganti TheGame classnya karena karena Game nabrak sama import Game
 	SpriteBatch batch;
+	public BitmapFont title;
 	public BitmapFont font;
 	public BitmapFont winFont;
 	public BitmapFont loseFont;
 	public Music mainTheme;
-
+	public Music battleTheme;
+	public Music loseTheme;
+	public Music winTheme;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		title = new BitmapFont();
+		title.setColor(Color.YELLOW);
+		title.getData().setScale(2);
 		font = new BitmapFont();
 		winFont = new BitmapFont();
 		winFont.setColor(Color.YELLOW);
@@ -26,7 +32,10 @@ public class TheGame extends Game { // ini tak ganti TheGame classnya karena kar
 		loseFont.setColor(Color.RED);
 		loseFont.getData().setScale(2);
 		mainTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/mainTheme.wav"));
-		this.setScreen(new Demo(this));
+		battleTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/battleTheme.mp3"));
+		loseTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/loseTheme.wav"));
+		winTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/winTheme.wav"));
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
