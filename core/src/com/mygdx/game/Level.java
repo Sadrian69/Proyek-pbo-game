@@ -8,6 +8,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -25,6 +31,10 @@ public class Level implements Screen {
    BitmapFont font = new BitmapFont();
    static int win = 0;
    int goal;
+   TextureAtlas textureAtlas;
+   Skin skin;
+   Stage stage;
+   TextButton retry, mainMenu;
 
    public Level(final TheGame game, int goal) {
       this.game = game;
@@ -41,6 +51,9 @@ public class Level implements Screen {
 
       enemies.add(new EnemyMelee(hero));
       this.goal = goal;
+
+      stage = new Stage();
+      Gdx.input.setInputProcessor(stage);
    }
 
    @Override
@@ -49,27 +62,17 @@ public class Level implements Screen {
          game.battleTheme.stop();
          game.batch.begin();
          if(win == goal) {
-            game.winFont.draw(game.batch, "You Win", 500, 360);
+            game.winFont.draw(game.batch, "You Win", 390, 600);
             game.winTheme.play();
          } else {
-            game.loseFont.draw(game.batch, "You Lose", 500, 360);
+            game.loseFont.draw(game.batch, "You Lose", 390, 600);
             game.loseTheme.play();
          }
-         game.font.draw(game.batch, "Press Space to Retry", 494, 320);
-         game.font.draw(game.batch, "Press Enter to go back to Main Menu", 440, 295);
          game.batch.end();
 
-         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            win = 0;
-            game.setScreen(new Level(game, goal));
-            dispose();
-         }
+         update(delta);
 
-         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            win = 0;
-            game.setScreen(new MainMenuScreen(game));
-            dispose();
-         }
+         stage.draw();
 
       } else {
          ScreenUtils.clear(0, 0.05f, 0.44f, 1);
@@ -154,6 +157,10 @@ public class Level implements Screen {
       }
    }
 
+   public void update(float delta){
+      stage.act();
+   }
+
    @Override
    public void resize(int width, int height) {
    }
@@ -165,6 +172,11 @@ public class Level implements Screen {
       game.battleTheme.setVolume(0.1f);
       game.battleTheme.play();
       game.battleTheme.setLooping(true);
+
+      textureAtlas = new TextureAtlas(Gdx.files.internal("Buttons/uiskin.atlas"));
+      skin = new Skin(Gdx.files.internal("Buttons/uiskin.json"), textureAtlas);
+
+      initButtons();
    }
 
    @Override
@@ -183,5 +195,32 @@ public class Level implements Screen {
    public void dispose() {
       batch.dispose();
       font.dispose();
+   }
+
+   private void initButtons(){
+      retry = new TextButton("Retry", skin, "default");
+      retry.setPosition(440, 350);
+      retry.setSize(200, 60);
+      retry.addListener(new ClickListener(){
+         @Override
+         public void clicked(InputEvent event, float x, float y) {
+            win = 0;
+            game.setScreen(new Level(game, goal));
+         }
+      });
+
+      mainMenu = new TextButton("Return to Main Menu", skin, "default");
+      mainMenu.setPosition(440, 250);
+      mainMenu.setSize(200, 60);
+      mainMenu.addListener(new ClickListener(){
+         @Override
+         public void clicked(InputEvent event, float x, float y) {
+            win = 0;
+            game.setScreen(new MainMenuScreen(game));
+         }
+      });
+
+      stage.addActor(retry);
+      stage.addActor(mainMenu);
    }
 }
