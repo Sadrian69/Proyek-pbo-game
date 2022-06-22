@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,19 +17,23 @@ public class Hero extends Rectangle {
     public int health;
     public TextureAtlas idling;
     public TextureAtlas attacking;
+    public TextureAtlas running;
     public static final float FRAME_DURATION = 0.05f;
     public Animation idleAnimation;
     public Animation attackAnimation;
+    public Animation runningAnimation;
     public TextureRegion firstTexture;
     Sound takeDamageSound;
     Sound deathSound;
     public float lastAttack;
+    public float lastMove;
     ArrayList<Enemy> enemies;
 
     public Hero(ArrayList<Enemy> enemies) {
         health = 3;
         blocking = false;
         lastAttack = -100;
+        lastMove = -100;
         this.x = 0;
         this.y = 315;
         this.width = 300;
@@ -46,13 +51,21 @@ public class Hero extends Rectangle {
         Array<TextureAtlas.AtlasRegion> attackingFrames = attacking.findRegions("attacking");
         attackAnimation = new Animation(FRAME_DURATION, attackingFrames, Animation.PlayMode.NORMAL);
 
-        firstTexture = idlingFrames.first();
+        running = new TextureAtlas(Gdx.files.internal("Sprites/Hero/running.atlas"));
+        Array<TextureAtlas.AtlasRegion> runningFrames = running.findRegions("running");
+        runningAnimation = new Animation(FRAME_DURATION, runningFrames, Animation.PlayMode.NORMAL);
     }
 
 
     public TextureRegion currentFrame(float time){
         if(time - lastAttack < 20*Gdx.graphics.getDeltaTime()) return (TextureRegion)  attackAnimation.getKeyFrame(time-lastAttack);
+        else if (time - lastMove < 20*Gdx.graphics.getDeltaTime()) return (TextureRegion)  runningAnimation.getKeyFrame(time-lastMove);
         else return (TextureRegion) idleAnimation.getKeyFrame(time);
+    }
+
+
+    public void Move (float time){
+        lastMove = time;
     }
 
     public void Attack(float time){

@@ -65,6 +65,7 @@ public class Demo implements Screen {
             game.setScreen(new MainMenuScreen(game));
             dispose();
          }
+
       } else {
          ScreenUtils.clear(0, 0.05f, 0.44f, 1);
          batch.setProjectionMatrix(camera.combined);
@@ -103,8 +104,8 @@ public class Demo implements Screen {
          batch.end();
 
          if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            // hero lompat kecil atau gausah gapapa
             hero.Unblock();
+            hero.Move(elapsedTime);
 
             if (!enemies.isEmpty() && enemies.get(0).curPos == 1) {
                // sfx tetot
