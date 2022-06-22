@@ -32,12 +32,18 @@ public class MainMenuScreen implements Screen {
 
 
         game.batch.begin();
+        game.batch.draw(game.stoneFloor, 0, 0);
         game.title.draw(game.batch, "Welcome to RPG! ", 420, 600);
-        game.font.draw(game.batch, "Press Enter to Start Game", 450, 500);
+        game.font.draw(game.batch, "[Enter] Start Game", 480, 500);
+        game.font.draw(game.batch, "[Esc] Exit Game", 490, 300);
         game.batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             game.setScreen(new LevelScreen(game));
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            System.exit(0);
         }
     }
 

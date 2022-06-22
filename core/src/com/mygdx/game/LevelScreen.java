@@ -31,6 +31,7 @@ public class LevelScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        game.batch.draw(game.stoneFloor, 0, 0);
         game.font.draw(game.batch, "[1] Level 1 (10 kill)", 480, 500);
         game.font.draw(game.batch, "[2] Level 2 (20 kill)", 480, 400);
         game.font.draw(game.batch, "[3] Level 3 (50 kill)", 480, 300);

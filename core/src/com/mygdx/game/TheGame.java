@@ -4,8 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+
+import java.awt.*;
 
 public class TheGame extends Game { // ini tak ganti TheGame classnya karena karena Game nabrak sama import Game
 	SpriteBatch batch;
@@ -17,7 +21,7 @@ public class TheGame extends Game { // ini tak ganti TheGame classnya karena kar
 	public Music battleTheme;
 	public Music loseTheme;
 	public Music winTheme;
-
+	Texture stoneFloor;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -35,6 +39,7 @@ public class TheGame extends Game { // ini tak ganti TheGame classnya karena kar
 		battleTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/battleTheme.mp3"));
 		loseTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/loseTheme.wav"));
 		winTheme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/winTheme.wav"));
+		stoneFloor = new Texture(Gdx.files.internal("Background/stoneFloor.jpg"));
 		this.setScreen(new MainMenuScreen(this));
 	}
 

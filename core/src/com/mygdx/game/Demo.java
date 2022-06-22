@@ -73,15 +73,15 @@ public class Demo implements Screen {
          elapsedTime += Gdx.graphics.getDeltaTime();
 
          batch.begin();
-
+         batch.draw(game.stoneFloor, 0, 0);
          batch.draw(hero.currentFrame(elapsedTime), hero.x, hero.y, hero.width, hero.height);
          font.setColor(Color.WHITE);
          font.draw(batch, Integer.toString(hero.health), hero.x + 140, 550);
          game.font.draw(batch, "Goal : Kill " + goal + " enemies!", 10, 700);
          game.font.draw(batch, "Enemies have killed : " + win, 10, 670);
-         game.font.draw(batch, "Press Right Arrow to move forward.", 10, 60);
-         game.font.draw(batch, "Press Left Arrow to block.", 10, 40);
-         game.font.draw(batch, "Press Down Arrow to attack.", 10, 20);
+         game.font.draw(batch, "[Right Arrow] Move forward.", 10, 60);
+         game.font.draw(batch, "[Left Arrow] Block Attacks.", 10, 40);
+         game.font.draw(batch, "[Down Arrow] Attack.", 10, 20);
 
          for (Enemy enemy : enemies) {
             batch.draw(enemy.currentFrame(elapsedTime), enemy.x, enemy.y, 0, 0, enemy.width, enemy.height, -1, 1, 0);
