@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,27 +13,31 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Demo implements Screen {
+public class Level implements Screen {
    final TheGame game;
    private SpriteBatch batch;
    OrthographicCamera camera;
+   private Sound tetot;
    private float elapsedTime = 0f;
    private Hero hero;
+   private Shield shield;
    private ArrayList<Enemy> enemies;
    BitmapFont font = new BitmapFont();
    static int win = 0;
    int goal;
 
-   public Demo(final TheGame game, int goal) {
+   public Level(final TheGame game, int goal) {
       this.game = game;
       batch = new SpriteBatch();
       camera = new OrthographicCamera();
       Gdx.graphics.setWindowedMode(1080,720);
       camera.setToOrtho(false, 1080, 720);
       font.getData().setScale(2.5f);
+      tetot = Gdx.audio.newSound(Gdx.files.internal("Sounds/tetot.wav"));
 
       enemies = new ArrayList<>();
       hero = new Hero(enemies);
+      shield = new Shield();
 
       enemies.add(new EnemyMelee(hero));
       this.goal = goal;
@@ -56,7 +61,7 @@ public class Demo implements Screen {
 
          if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             win = 0;
-            game.setScreen(new Demo(game, goal));
+            game.setScreen(new Level(game, goal));
             dispose();
          }
 
@@ -77,6 +82,8 @@ public class Demo implements Screen {
          batch.draw(hero.currentFrame(elapsedTime), hero.x, hero.y, hero.width, hero.height);
          font.setColor(Color.WHITE);
          font.draw(batch, Integer.toString(hero.health), hero.x + 140, 550);
+         if(hero.isBlocking()) batch.draw(shield.texture, shield.x, shield.y, shield.width, shield.height);
+
          game.font.draw(batch, "Goal : Kill " + goal + " enemies!", 10, 700);
          game.font.draw(batch, "Enemies have killed : " + win, 10, 670);
          game.font.draw(batch, "[Right Arrow] Move forward.", 10, 60);
@@ -108,7 +115,7 @@ public class Demo implements Screen {
             hero.Move(elapsedTime);
 
             if (!enemies.isEmpty() && enemies.get(0).curPos == 1) {
-               // sfx tetot
+               tetot.play();
             } else {
                for (Enemy enemy : enemies) {
                   enemy.move(elapsedTime);
@@ -155,6 +162,7 @@ public class Demo implements Screen {
    public void show() {
       // start the playback of the background music
       // when the screen is shown
+      game.battleTheme.setVolume(0.1f);
       game.battleTheme.play();
       game.battleTheme.setLooping(true);
    }

@@ -19,6 +19,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        game.mainTheme.setVolume(0.1f);
         game.mainTheme.play();
         game.mainTheme.setLooping(true);
     }
