@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
@@ -10,6 +11,7 @@ public class EnemyRanged extends Enemy{
    // menyerang setiap 5 giliran
    
    private int distanceOffset = 270;
+   private Sound enemyRangedAttack;
 
    public EnemyRanged(Hero hero) {
       this.width = 250;
@@ -23,7 +25,9 @@ public class EnemyRanged extends Enemy{
       this.hero = hero;
       
       deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/monsterDeath.wav"));
-      
+      blockedSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/blockDamage.wav"));
+      enemyRangedAttack = Gdx.audio.newSound(Gdx.files.internal("Sounds/enemyRangedAttack.wav"));
+
       idling = new TextureAtlas(Gdx.files.internal("Sprites/Ranged/Idle.atlas"));
       Array<TextureAtlas.AtlasRegion> idlingFrames = idling.findRegions("idling");
       idleAnimation = new Animation(FRAME_DURATION, idlingFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP);
@@ -46,7 +50,9 @@ public class EnemyRanged extends Enemy{
 
    @Override
    public void attack(float time) {
+      enemyRangedAttack.play();
       if(!hero.isBlocking()) hero.Hurt();
+      else blockedSound.play();
       lastAttack = time;
 
    }

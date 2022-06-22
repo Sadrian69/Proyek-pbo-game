@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,6 +24,7 @@ public class Hero extends Rectangle {
     public TextureRegion firstTexture;
     Sound takeDamageSound;
     Sound deathSound;
+    Sound heroAttack;
     public float lastAttack;
     public float lastMove;
     ArrayList<Enemy> enemies;
@@ -42,6 +42,7 @@ public class Hero extends Rectangle {
 
         takeDamageSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/takeDamage.wav"));
         deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Death.wav"));
+        heroAttack = Gdx.audio.newSound(Gdx.files.internal("Sounds/heroAttack.wav"));
 
         idling = new TextureAtlas(Gdx.files.internal("Sprites/Hero/idle.atlas"));
         Array<TextureAtlas.AtlasRegion> idlingFrames = idling.findRegions("idling");
@@ -59,7 +60,7 @@ public class Hero extends Rectangle {
 
     public TextureRegion currentFrame(float time){
         if(time - lastAttack < 20*Gdx.graphics.getDeltaTime()) return (TextureRegion)  attackAnimation.getKeyFrame(time-lastAttack);
-        else if (time - lastMove < 20*Gdx.graphics.getDeltaTime()) return (TextureRegion)  runningAnimation.getKeyFrame(time-lastMove);
+        else if (time - lastMove < 10*Gdx.graphics.getDeltaTime()) return (TextureRegion)  runningAnimation.getKeyFrame(time-lastMove);
         else return (TextureRegion) idleAnimation.getKeyFrame(time);
     }
 
@@ -69,11 +70,12 @@ public class Hero extends Rectangle {
     }
 
     public void Attack(float time){
+        heroAttack.play();
         lastAttack = time;
         if(enemies.get(0).curPos == 1){ // meninggal
             enemies.get(0).die();
             enemies.remove(0);
-            Demo.win++;
+            Level.win++;
         }
     }
     public void Block(){

@@ -20,6 +20,7 @@ public abstract class Enemy extends Rectangle implements EnemyAble{
    public Animation attackAnimation;
    public TextureRegion firstTexture;
    public Sound deathSound;
+   public Sound blockedSound;
    public Hero hero;
 
    public TextureRegion currentFrame(float time){

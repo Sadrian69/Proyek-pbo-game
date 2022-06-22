@@ -37,17 +37,17 @@ public class LevelScreen implements Screen {
         game.batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
-            game.setScreen(new Demo(game, 10));
+            game.setScreen(new Level(game, 10));
             dispose();
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
-            game.setScreen(new Demo(game, 20));
+            game.setScreen(new Level(game, 20));
             dispose();
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
-            game.setScreen(new Demo(game, 50));
+            game.setScreen(new Level(game, 50));
             dispose();
         }
     }
