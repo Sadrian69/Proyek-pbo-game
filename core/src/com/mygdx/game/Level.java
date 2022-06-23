@@ -158,7 +158,7 @@ public class Level implements Screen {
    }
 
    public void update(float delta){
-      stage.act();
+      stage.act(delta);
    }
 
    @Override
